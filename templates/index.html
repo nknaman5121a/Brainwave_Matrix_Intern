@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phishing Link Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+    <div class="toggle-container">
+        <label>
+            🌙 Dark Mode
+            <input type="checkbox" id="darkToggle">
+        </label>
+    </div>
+    
+    <div class="container">
+        <h1>🔎 Phishing Link Scanner</h1>
+        <form method="POST">
+            <input type="text" name="url" placeholder="Enter URL here" required>
+            <button type="submit">Scan</button>
+        </form>
+
+        {% if result %}
+        <div class="results">
+            <h2>Scan Results</h2>
+            <ul>
+                <li><strong>URL:</strong> {{ result.url }}</li>
+                <li><strong>IP Address in URL:</strong> {{ result.ip }}</li>
+                <li><strong>Suspicious Keywords:</strong> {{ result.keywords }}</li>
+                <li><strong>Too Many Hyphens:</strong> {{ result.hyphens }}</li>
+                <li><strong>@ Symbol Present:</strong> {{ result.atsymbol }}</li>
+                <li><strong>Domain Length:</strong> {{ result.domain_len }}</li>
+                <li><strong>Path Length:</strong> {{ result.path_len }}</li>
+                <li><strong>VirusTotal:</strong> {{ result.virustotal }}</li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        const toggle = document.getElementById('darkToggle');
+        const body = document.body;
+    
+        toggle.addEventListener('change', () => {
+            body.classList.toggle('dark', toggle.checked);
+            localStorage.setItem('dark-mode', toggle.checked);
+        });
+    
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('dark-mode') === 'true';
+            toggle.checked = saved;
+            body.classList.toggle('dark', saved);
+        });
+    </script>
+    
+</body>
+</html>
